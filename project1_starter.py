@@ -18,15 +18,29 @@ def create_character(name, character_class):
     Creates a new character dictionary with calculated stats.
     Returns a dictionary with keys: name, class, level, strength, magic, health, gold.
     """
-    # Ensure inputs are valid strings
-    if not isinstance(name, str) or not name.strip():
-        name = "Unknown"
-    if not isinstance(character_class, str) or not character_class.strip():
-        character_class = "Default"
+    level = 1
+    gold = 100
 
-    level = 1  # All new characters start at level 1
-    strength, magic, health = calculate_stats(character_class, level)
-    gold = 100  # Default starting gold
+    if character_class.lower() == "academic weapon":
+        strength = 30
+        magic = 80
+        health = 40
+    elif character_class.lower() == "social butterfly":
+        strength = 50
+        magic = 40
+        health = 90
+    elif character_class.lower() == "student athlete":
+        strength = 80
+        magic = 20
+        health = 80
+    elif character_class.lower() == "hustler":
+        strength = 60
+        magic = 70
+        health = 60
+    else:
+        strength = 50
+        magic = 50
+        health = 60
 
     return {
         "name": name,
@@ -36,8 +50,7 @@ def create_character(name, character_class):
         "magic": magic,
         "health": health,
         "gold": gold
-    }
-
+}
 # --------------------------
 # STAT CALCULATION
 # --------------------------
