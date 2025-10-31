@@ -142,15 +142,26 @@ def load_character(filename):
     if not filename or filename.strip() == "":
         return None
 
-    character = {}
-    if "/" in filename or "\\" in filename:
+    # Reject invalid-looking filenames
+    if "/" in filename or "\\" in filename or " " in filename:
         return None
 
-    # Check if file can be opened (no try/except allowed)
+    # Check if file exists by trying to read it
     file_list = []
-    with open(filename, "r") as file:
-        file_list = file.readlines()
+    file_valid = False
+    open_file = open(filename, "a+")
+    open_file.seek(0)
+    content = open_file.read()
+    if content != "":
+        file_valid = True
+        open_file.seek(0)
+        file_list = open_file.readlines()
+    open_file.close()
 
+    if not file_valid:
+        return None
+
+    character = {}
     for line in file_list:
         if ": " not in line:
             continue
