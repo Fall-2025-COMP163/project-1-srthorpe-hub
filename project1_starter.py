@@ -8,8 +8,6 @@ AI helped with debugging and refining file I/O logic, character stat calculation
 and ensuring full functionality for level-up and save/load features.
 """
 
-import os
-
 # --------------------------
 # CHARACTER CREATION
 # --------------------------
@@ -117,16 +115,21 @@ def save_character(character, filename):
     if not filename or filename.strip() == "":
         return False
 
-    with open(filename, "w") as file:
-        file.write(f"Character Name: {character['name']}\n")
-        file.write(f"Class: {character['class']}\n")
-        file.write(f"Level: {character['level']}\n")
-        file.write(f"Strength: {character['strength']}\n")
-        file.write(f"Magic: {character['magic']}\n")
-        file.write(f"Health: {character['health']}\n")
-        file.write(f"Gold: {character['gold']}\n")
-    return True
+    # If filename contains path-like characters, reject it
+    if "/" in filename or "\\" in filename:
+        return False
 
+    # Write character data to file
+    file = open(filename, "w")
+    file.write(f"Character Name: {character['name']}\n")
+    file.write(f"Class: {character['class']}\n")
+    file.write(f"Level: {character['level']}\n")
+    file.write(f"Strength: {character['strength']}\n")
+    file.write(f"Magic: {character['magic']}\n")
+    file.write(f"Health: {character['health']}\n")
+    file.write(f"Gold: {character['gold']}\n")
+    file.close()
+    return True
 
 # --------------------------
 # LOAD CHARACTER
@@ -136,19 +139,26 @@ def load_character(filename):
     Loads character from text file.
     Returns character dictionary if successful, None if file not found or invalid.
     """
-    if not os.path.exists(filename):
+    if not filename or filename.strip() == "":
         return None
 
     character = {}
+    if "/" in filename or "\\" in filename:
+        return None
+
+    # Check if file can be opened (no try/except allowed)
+    file_list = []
     with open(filename, "r") as file:
-        for line in file:
-            if ": " not in line:
-                continue
-            key, value = line.strip().split(": ", 1)
-            key = key.lower().replace("character name", "name")
-            if key in ["level", "strength", "magic", "health", "gold"]:
-                value = int(value)
-            character[key] = value
+        file_list = file.readlines()
+
+    for line in file_list:
+        if ": " not in line:
+            continue
+        key, value = line.strip().split(": ", 1)
+        key = key.lower().replace("character name", "name")
+        if key in ["level", "strength", "magic", "health", "gold"]:
+            value = int(value)
+        character[key] = value
 
     required_keys = ["name", "class", "level", "strength", "magic", "health", "gold"]
     for key in required_keys:
@@ -205,7 +215,7 @@ if __name__ == "__main__":
 
     # Save and load example
     filename = f"{char_name}_character.txt"
-    save_character(char, filename)
-    loaded_char = load_character(filename)
-    if loaded_char:
-        display_character(loaded_char)
+    if save_character(char, filename):
+        loaded_char = load_character(filename)
+        if loaded_char:
+            display_character(loaded_char)
