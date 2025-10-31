@@ -8,6 +8,8 @@ AI helped with debugging and refining file I/O logic, character stat calculation
 and ensuring full functionality for level-up and save/load features.
 """
 
+import os
+
 # --------------------------
 # CHARACTER CREATION
 # --------------------------
@@ -146,17 +148,12 @@ def load_character(filename):
     if "/" in filename or "\\" in filename or " " in filename:
         return None
 
-    # Try to open file only if it exists; no exceptions allowed
-    valid_file = False
-    file_list = []
-    file_handle = open(filename, "r")
-    file_list = file_handle.readlines()
-    file_handle.close()
-    if len(file_list) > 0:
-        valid_file = True
-
-    if not valid_file:
+    # Check if file exists
+    if not os.path.exists(filename):
         return None
+
+    # Read the file normally
+    file_list = open(filename, "r").readlines()
 
     character = {}
     for line in file_list:
