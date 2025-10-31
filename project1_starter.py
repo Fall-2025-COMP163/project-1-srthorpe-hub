@@ -37,6 +37,14 @@ def create_character(name, character_class):
         strength = 60
         magic = 70
         health = 60
+    elif character_class.lower() == "warrior":
+        strength = 90
+        magic = 30
+        health = 100
+    elif character_class.lower() == "mage":
+        strength = 30
+        magic = 90
+        health = 60
     else:
         strength = 50
         magic = 50
@@ -50,7 +58,8 @@ def create_character(name, character_class):
         "magic": magic,
         "health": health,
         "gold": gold
-}
+    }
+
 # --------------------------
 # STAT CALCULATION
 # --------------------------
@@ -76,6 +85,14 @@ def calculate_stats(character_class, level):
         strength = 6 + level * 2
         magic = 10 + level * 3
         health = 20 + level * 3
+    elif character_class == "warrior":
+        strength = 10 + level * 4
+        magic = 3 + level
+        health = 80 + level * 5
+    elif character_class == "mage":
+        strength = 3 + level
+        magic = 10 + level * 4
+        health = 50 + level * 3
     else:
         # Default (balanced)
         strength = 5 + level * 2
@@ -95,7 +112,9 @@ def save_character(character, filename):
     for key in required_keys:
         if key not in character:
             return False
-    if not filename or filename.isspace():
+
+    # Check if filename is empty or only whitespace
+    if not filename or filename.strip() == "":
         return False
 
     with open(filename, "w") as file:
@@ -107,6 +126,7 @@ def save_character(character, filename):
         file.write(f"Health: {character['health']}\n")
         file.write(f"Gold: {character['gold']}\n")
     return True
+
 
 # --------------------------
 # LOAD CHARACTER
@@ -173,7 +193,7 @@ def level_up(character):
 if __name__ == "__main__":
     print("=== CHARACTER CREATOR ===\n")
     char_name = input("Enter your character's name: ").strip()
-    print("Choose a class: Academic Weapon, Social Butterfly, Student Athlete, Hustler")
+    print("Choose a class: Academic Weapon, Social Butterfly, Student Athlete, Hustler, Warrior, Mage")
     char_class = input("Enter your character's class: ").strip()
 
     char = create_character(char_name, char_class)
