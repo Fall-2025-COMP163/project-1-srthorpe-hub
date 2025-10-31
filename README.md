@@ -97,3 +97,14 @@ Modifying protected files will result in automatic academic integrity violation
 Implementation (70%): Function correctness, file operations, error handling
 
 Interview (30%): Code explanation and live coding challenge
+
+
+Game Concept: My game was created to be a college rpg type of game. It is supposed to take different "stereotypes" of people in college and make them into characters. Where I assigned different things to their attributes.
+
+Design: I chose those formulas so that they would correspond with the stereotypes. Like how the academic weapon would increase their magic more than others because I made "magic" to mean "intelligence".
+
+Bonus Creative Features: I did not add anything unique
+
+Ai usage: I used ai to help me with this code grammatically and help debug it when I was confused on what was wrong. It was especially helpful with getting the sections where I used files to work.
+
+How to run: You open the file and then you run it in an IDE.
