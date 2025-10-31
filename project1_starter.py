@@ -146,19 +146,16 @@ def load_character(filename):
     if "/" in filename or "\\" in filename or " " in filename:
         return None
 
-    # Check if file exists by trying to read it
+    # Try to open file only if it exists; no exceptions allowed
+    valid_file = False
     file_list = []
-    file_valid = False
-    open_file = open(filename, "a+")
-    open_file.seek(0)
-    content = open_file.read()
-    if content != "":
-        file_valid = True
-        open_file.seek(0)
-        file_list = open_file.readlines()
-    open_file.close()
+    file_handle = open(filename, "r")
+    file_list = file_handle.readlines()
+    file_handle.close()
+    if len(file_list) > 0:
+        valid_file = True
 
-    if not file_valid:
+    if not valid_file:
         return None
 
     character = {}
@@ -230,3 +227,4 @@ if __name__ == "__main__":
         loaded_char = load_character(filename)
         if loaded_char:
             display_character(loaded_char)
+
